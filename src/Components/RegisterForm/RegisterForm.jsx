@@ -47,7 +47,7 @@ export default function RegisterForm() {
 
   //   console.log(formik.errors);
   return (
-    <form className="flex flex-col gap-2" onSubmit={formik.handleSubmit}>
+    <form className="flex flex-col gap-2 w-full" onSubmit={formik.handleSubmit}>
       <TextField
         id="outlined-basic username"
         label="Username"
@@ -82,6 +82,7 @@ export default function RegisterForm() {
       />
       <div className="relative">
         <TextField
+          fullWidth={true}
           id="outlined-basic password"
           label="Password"
           variant="outlined"
@@ -109,6 +110,7 @@ export default function RegisterForm() {
       </div>
       <div className="relative">
         <TextField
+          fullWidth={true}
           id="outlined-basic confirmPassword"
           label="Confrim Password"
           variant="outlined"

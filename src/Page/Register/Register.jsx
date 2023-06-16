@@ -5,7 +5,7 @@ import instagramLogo from "./../../Assets/Images/instagram-logo.png";
 export default function Register() {
   return (
     <div className="h-[100vh] w-full flex flex-col items-center gap-5">
-      <div className="w-[350px] p-[30px] mt-[30px] flex flex-col items-center h-fit gap-5 min-[430px]:border min-[430px]:border-[#dbdbdb]">
+      <div className="w-[350px] p-[40px] mt-[30px] flex flex-col items-center h-fit gap-5 min-[430px]:border min-[430px]:border-[#dbdbdb]">
         <img
           className="w-[175px] object-cover"
           src={instagramLogo}
