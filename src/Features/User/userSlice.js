@@ -4,6 +4,9 @@ import axios from "axios";
 const initialState = {
   registerErrorMessage: "",
   registerLoad: false,
+  loginErrorMessage: "",
+  loginLoad: false,
+  userData: null,
 };
 
 const userSlice = createSlice({
@@ -15,6 +18,15 @@ const userSlice = createSlice({
     },
     setRegisterLoad: (initialState, action) => {
       initialState.registerLoad = action.payload;
+    },
+    setLoginErrorMessage: (initialState, action) => {
+      initialState.loginErrorMessage = action.payload;
+    },
+    setLoginLoad: (initialState, action) => {
+      initialState.loginLoad = action.payload;
+    },
+    setUserData: (initialState, action) => {
+      initialState.userData = {};
     },
   },
 });
@@ -41,6 +53,39 @@ export const registerFetch =
     }
   };
 
-export const { setRegisterErrorMessage, setRegisterLoad } = userSlice.actions;
+export const loginFetch = (usernameOrEmail, password) => async (dispatch) => {
+  try {
+    const result = await axios.post(`http://localhost:5999/users/login`, {
+      usernameOrEmail,
+      password,
+    });
+    dispatch(setLoginLoad(false));
+    localStorage.setItem("token", result.data.token);
+    console.log(result);
+    setTimeout(() => {
+      dispatch(setUserData(result.data.data));
+    }, 1000);
+  } catch (error) {
+    console.log(error.response.data.message);
+    dispatch(setLoginLoad(false));
+    dispatch(setLoginErrorMessage(error.response.data.message));
+  }
+};
+
+// export const getUser = () => async (dispatch) => {
+//   try {
+
+//   } catch (error) {
+
+//   }
+// }
+
+export const {
+  setRegisterErrorMessage,
+  setRegisterLoad,
+  setLoginErrorMessage,
+  setLoginLoad,
+  setUserData,
+} = userSlice.actions;
 
 export default userSlice.reducer;
