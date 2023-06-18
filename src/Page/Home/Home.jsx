@@ -1,7 +1,7 @@
-export default function Home () {
-    return (
-        <>
-        <h1 className="text-[100px]"> Home</h1>
-        </>
-    )
+export default function Home() {
+  return (
+    <div className="w-full flex justify-center">
+      <div>hello</div>
+    </div>
+  );
 }

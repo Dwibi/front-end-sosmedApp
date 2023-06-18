@@ -4,6 +4,9 @@ import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./Page/Home/Home";
 import Login from "./Page/Login/Login";
 import Register from "./Page/Register/Register";
+import EmailVerification from "./Page/EmailVerification/EmailVerification";
+import Layout from "./Components/Layout/Layout";
+import Profile from "./Page/Profile/Profile";
 
 function App() {
   const ProtectRoute = (props) => {
@@ -30,7 +33,19 @@ function App() {
           path="/"
           element={
             <ProtectRoute>
-              <Home />
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectRoute>
+              <Layout>
+                <Profile />
+              </Layout>
             </ProtectRoute>
           }
         />
@@ -49,6 +64,10 @@ function App() {
               <Register />
             </ProtectRouteAuth>
           }
+        />
+        <Route
+          path="/email-verification/:token"
+          element={<EmailVerification />}
         />
       </Routes>
     </div>
