@@ -1,24 +1,84 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
+import Home from "./Page/Home/Home";
+import Login from "./Page/Login/Login";
+import Register from "./Page/Register/Register";
+import EmailVerification from "./Page/EmailVerification/EmailVerification";
+import Layout from "./Components/Layout/Layout";
+import Profile from "./Page/Profile/Profile";
+import ForgetPassword from "./Page/ForgetPassword/ForgetPassword";
+import ForgetPasswordVerification from "./Page/ForgetPasswordVerification/ForgetPasswordVerification";
+import { Toaster } from "react-hot-toast";
 
 function App() {
+  const ProtectRoute = (props) => {
+    if (localStorage.getItem("token")) {
+      return props.children;
+    }
+    return <Navigate to="/login" />;
+  };
+
+  const ProtectRouteAuth = (props) => {
+    if (localStorage.getItem("token")) {
+      return <Navigate to="/" />;
+    }
+    return props.children;
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p>test</p>
-      </header>
+      <Toaster />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectRoute>
+              <Layout>
+                <Profile />
+              </Layout>
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <ProtectRouteAuth>
+              <Login />
+            </ProtectRouteAuth>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <ProtectRouteAuth>
+              <Register />
+            </ProtectRouteAuth>
+          }
+        />
+        <Route
+          path="/email-verification/:token"
+          element={<EmailVerification />}
+        />
+        <Route
+          path="/forget-password/:token"
+          element={<ForgetPasswordVerification />}
+        />
+        <Route
+          path="/forget-password/email/user"
+          element={<ForgetPassword />}
+        />
+      </Routes>
     </div>
   );
 }
