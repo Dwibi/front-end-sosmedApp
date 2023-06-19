@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const initialState = {
   registerErrorMessage: "",
@@ -26,7 +27,7 @@ const userSlice = createSlice({
       initialState.loginLoad = action.payload;
     },
     setUserData: (initialState, action) => {
-      initialState.userData = {};
+      initialState.userData = action.payload;
     },
   },
 });
@@ -63,7 +64,7 @@ export const loginFetch = (usernameOrEmail, password) => async (dispatch) => {
     localStorage.setItem("token", result.data.token);
     console.log(result);
     setTimeout(() => {
-      dispatch(setUserData(result.data.data));
+      dispatch(getUserLogIn(result.data.token));
     }, 1000);
   } catch (error) {
     console.log(error.response.data.message);
@@ -72,13 +73,19 @@ export const loginFetch = (usernameOrEmail, password) => async (dispatch) => {
   }
 };
 
-// export const getUser = () => async (dispatch) => {
-//   try {
+export const getUserLogIn = (token) => async (dispatch) => {
+  try {
+    const result = await axios.get("http://localhost:5999/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-//   } catch (error) {
-
-//   }
-// }
+    dispatch(setUserData(result.data.data));
+  } catch (error) {
+    toast.error(error);
+  }
+};
 
 export const {
   setRegisterErrorMessage,

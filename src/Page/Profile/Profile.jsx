@@ -1,6 +1,6 @@
 export default function Profile() {
   return (
-    <div>
+    <div className="flex flex-col items-center w-full">
       <p>Profile</p>
     </div>
   );

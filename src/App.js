@@ -7,8 +7,15 @@ import Register from "./Page/Register/Register";
 import EmailVerification from "./Page/EmailVerification/EmailVerification";
 import Layout from "./Components/Layout/Layout";
 import Profile from "./Page/Profile/Profile";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getUserLogIn } from "./Features/User/userSlice";
+import { Toaster } from "react-hot-toast";
 
 function App() {
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.user);
+
   const ProtectRoute = (props) => {
     if (localStorage.getItem("token")) {
       return props.children;
@@ -23,8 +30,17 @@ function App() {
     return props.children;
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token") && !userData) {
+      dispatch(getUserLogIn(localStorage.getItem("token")));
+    }
+  }, []);
+
+  // console.log(userData);
+
   return (
     <div className="App">
+      <Toaster />
       {/* <Link to="/">Home</Link>
       <Link to="/login">Login</Link>
       <Link to="/register">Register</Link> */}
