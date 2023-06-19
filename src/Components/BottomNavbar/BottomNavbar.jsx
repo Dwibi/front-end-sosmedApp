@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 export default function BottomNavbar() {
   return (
-    <div className="h-[48px] flex justify-evenly gap-3 min-[767px]:hidden border-t-2 border-[#dfdfdf]">
+    <div className="h-[48px] flex justify-evenly gap-3 min-[767px]:hidden border-t-2 border-[#dfdfdf] w-full fixed bottom-0 bg-white">
       <Link to="/" className="p-3 rounded-lg hover:bg-[#dfdfdf] cursor-pointer">
         {window.location.pathname === "/" ? <HomeIcon /> : <HomeOutlinedIcon />}
       </Link>
