@@ -7,9 +7,14 @@ import Register from "./Page/Register/Register";
 import EmailVerification from "./Page/EmailVerification/EmailVerification";
 import Layout from "./Components/Layout/Layout";
 import Profile from "./Page/Profile/Profile";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getUserLogIn } from "./Features/User/userSlice";
+
+import ForgetPassword from "./Page/ForgetPassword/ForgetPassword";
+import ForgetPasswordVerification from "./Page/ForgetPasswordVerification/ForgetPasswordVerification";
+
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -41,9 +46,6 @@ function App() {
   return (
     <div className="App">
       <Toaster />
-      {/* <Link to="/">Home</Link>
-      <Link to="/login">Login</Link>
-      <Link to="/register">Register</Link> */}
       <Routes>
         <Route
           path="/"
@@ -84,6 +86,14 @@ function App() {
         <Route
           path="/email-verification/:token"
           element={<EmailVerification />}
+        />
+        <Route
+          path="/forget-password/:token"
+          element={<ForgetPasswordVerification />}
+        />
+        <Route
+          path="/forget-password/email/user"
+          element={<ForgetPassword />}
         />
       </Routes>
     </div>
