@@ -1,11 +1,14 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import { createPost } from "../../Features/Post/postSlice";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
+import ModalPopUp from "../ModalPopUp/ModalPopUp";
+import { useDispatch } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -20,24 +23,23 @@ const style = {
 };
 
 export default function ModalCreatePost(props) {
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   // const [image, setImage] = useState(null);
   const formik = useFormik({
     initialValues: {
       image_post: "",
       caption: "",
     },
-    validate: (values) => {
-      let errors = {};
-      if (!values.caption) {
-        errors.caption = "Required!";
-      }
-      return errors;
-    },
-    // validationSchema: Yup.object({
-    //   caption: Yup.string().required("Required!"),
-    // }),
+    validationSchema: Yup.object({
+      caption: Yup.string().required("Required!"),
+    }),
     onSubmit: (values) => {
       console.log(values);
+      dispatch(createPost(values.image_post, values.caption));
+      handleCloseAll();
     },
   });
 
@@ -47,17 +49,37 @@ export default function ModalCreatePost(props) {
     // console.log(image);
   };
 
-  console.log(formik.values);
+  const handlePopUpClose = () => {
+    if (formik.values.image_post) {
+      handleOpen();
+    } else {
+      props.handleClose();
+    }
+  };
+
+  const handleCloseAll = () => {
+    formik.setFieldValue("image_post", "");
+    formik.setFieldValue("caption", "");
+    props.handleClose();
+    handleClose();
+  };
+
+  // console.log(formik.values);
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={props.open}
-        onClose={props.handleClose}
+        onClose={handlePopUpClose}
         aria-labelledby="create-post"
         aria-describedby="create-post"
       >
         <Box sx={style}>
+          <ModalPopUp
+            open={open}
+            handleClose={handleClose}
+            handleCloseAll={handleCloseAll}
+          />
           <form className="flex flex-col gap-3" onSubmit={formik.handleSubmit}>
             {formik.values.image_post ? (
               <label
@@ -98,7 +120,6 @@ export default function ModalCreatePost(props) {
                   label="Caption"
                   multiline
                   rows={4}
-                  max
                   name="caption"
                   inputProps={{ maxLength: 255 }}
                   onChange={formik.handleChange}
@@ -109,6 +130,7 @@ export default function ModalCreatePost(props) {
                   className="!bg-[#1877f2] !rounded-lg"
                   type="submit"
                   // loading={registerLoad}
+                  disabled={formik.values.caption ? false : true}
                   loadingIndicator="Loading…"
                   variant="contained"
                 >

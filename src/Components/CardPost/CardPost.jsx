@@ -2,13 +2,13 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-export default function CardPost() {
-  const [expand, setExpand] = useState(false);
-  const expandCaption = () => {
-    setExpand(true);
-  };
+export default function CardPost(props) {
+  const { userData } = useSelector((state) => state.user);
   return (
     <div>
       <div className="p-[14px] flex items-center justify-between">
@@ -18,12 +18,23 @@ export default function CardPost() {
             src="https://i.pinimg.com/736x/9a/64/8a/9a648ac91d323b0931448ab34055f967.jpg"
             alt="profile"
           />
-          <p className="ml-[14px] font-bold text-sm">User</p>
+          <p className="ml-[14px] font-bold text-sm">
+            {props?.data?.User?.username}
+          </p>
         </div>
-        <MoreHorizIcon />
+        {userData?.id === props?.data?.user_id ? (
+          <div className="flex gap-2">
+            <EditIcon />
+            <div
+              onClick={() => props.deleteFunc(props?.data?.id, props?.index)}
+            >
+              <DeleteIcon />
+            </div>
+          </div>
+        ) : null}
       </div>
       <img
-        src="https://akcdn.detik.net.id/visual/2021/01/12/nostalgia-sama-minuman-minuman-populer-dari-masa-ke-masa-yang-mana-favoritmu_11.jpeg?w=480&q=90"
+        src={`http://localhost:5999/image_post/${props?.data?.image_post}`}
         alt="image-post"
       />
       <div className="p-[14px] flex flex-col gap-[8px]">
@@ -37,19 +48,9 @@ export default function CardPost() {
         </div>
         <p className="font-bold text-[14px]">100 Suka</p>
         <div>
-          <p className={!expand ? "text-sm line-clamp-2" : "text-sm"}>
-            <b>User</b> Lorem ipsum dolor, sit amet consectetur adipisicing
-            elit. Distinctio sapiente aliquam doloribus accusamus impedit
-            minima, sequi perspiciatis et! Officia, tempora?
+          <p className="text-sm">
+            <b> {props?.data?.User?.username}</b> {props?.data?.caption}
           </p>
-          {!expand ? (
-            <div
-              onClick={expandCaption}
-              className="text-sm text-[#737373] cursor-pointer"
-            >
-              More
-            </div>
-          ) : null}
         </div>
         <p className="text-[10px] text-[#737373]">DESEMBER 15, 2022</p>
       </div>

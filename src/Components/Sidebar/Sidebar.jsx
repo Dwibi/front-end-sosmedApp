@@ -8,13 +8,19 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ModalCreatePost from "../ModalCreatePost/ModalCreatePost";
+import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 export default function Sidebar() {
+  const { userData } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () =>
+    userData?.verify
+      ? setOpen(true)
+      : toast.error("Your account is not verfied");
   const handleClose = () => setOpen(false);
   return (
-    <div className="min-w-[70px] flex flex-col items-center h-[100vh] border-r-2 border-[#dfdfdf] max-[767px]:hidden">
+    <div className="min-w-[70px] fixed flex flex-col items-center h-[100vh] border-r-2 border-[#dfdfdf] max-[767px]:hidden">
       <ModalCreatePost open={open} handleClose={handleClose} />
       <div className="pb-8 pt-4">
         <Link to="/" className="p-3 rounded-lg cursor-pointer">
@@ -36,11 +42,7 @@ export default function Sidebar() {
           onClick={handleOpen}
           className="p-3 rounded-lg hover:bg-[#dfdfdf] cursor-pointer"
         >
-          {window.location.pathname === "/create" ? (
-            <AddCircleIcon />
-          ) : (
-            <AddCircleOutlineIcon />
-          )}
+          <AddCircleIcon />
         </div>
         <Link
           to="/profile"
